@@ -1,5 +1,3 @@
-// This example displays a marker at the center of Australia.
-// When the user clicks the marker, an info window opens.
       var map;
       var marker;
       var markers = [];
@@ -87,11 +85,12 @@ function initializeMarkers() {
 
 function saveData() {
         var name = document.getElementById('name').value;
-        document.getElementById('name').value = '';
         var notes = document.getElementById('notes').value;
-        document.getElementById('notes').value = '';
         var latlng = marker.getPosition();
-        addMarker(name, notes, latlng);
+        if (name != '')
+        	addMarker(name, notes, latlng);
+        document.getElementById('name').value = '';
+        document.getElementById('notes').value = '';
         inputwindow.close();
         messagewindow.open(map, marker);
 }
