@@ -24,7 +24,7 @@ function initMap() {
   counter = 0;
   tempMarker = null;
   
-  /*var circle = new google.maps.Circle({
+  var circle = new google.maps.Circle({
       strokeColor: '#00BFFF',
       strokeOpacity: 0.8,
       strokeWeight: 2,
@@ -52,7 +52,7 @@ function initMap() {
   } else {
     // Browser doesn't support Geolocation
     handleLocationError();
-  }*/
+  }
 
   initializeMarkers();
   
