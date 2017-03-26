@@ -23,6 +23,36 @@ function initMap() {
   deletewindow = new google.maps.InfoWindow();
   counter = 0;
   tempMarker = null;
+  
+  var circle = new google.maps.Circle({
+      strokeColor: '#00BFFF',
+      strokeOpacity: 0.8,
+      strokeWeight: 2,
+      fillColor: '#00BFFF',
+      fillOpacity: 0.35,
+      map: map,
+      radius: 8,
+      visible: false
+    });
+
+  // Try HTML5 geolocation.
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(position) {
+      var pos = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      };
+
+      circle.setCenter(pos);
+      circle.setVisible(true);
+      map.setCenter(pos);
+    }, function() {
+      handleLocationError(true, infoWindow, map.getCenter());
+    });
+  } else {
+    // Browser doesn't support Geolocation
+    handleLocationError(false, infoWindow, map.getCenter());
+  }
 
   initializeMarkers();
 
@@ -41,7 +71,9 @@ function initMap() {
       map: map
     });
     tempMarker = marker;
+    deletewindow.close();
     infowindow.close();
+    messagewindow.close();
     inputwindow.open(map, marker);
   });
 
@@ -56,10 +88,14 @@ function initMap() {
 
 function addMarker(name, notes, location) {
 
-  tempMarker = null;
+  
 
   counter++;
 
+  //if (tempMarker != null) tempMarker.setMap(null);
+  //tempMarker = null;
+
+//var
   var marker = new google.maps.Marker({
     position: location,
     map: map,
@@ -80,6 +116,8 @@ function addMarker(name, notes, location) {
     infowindow.setContent(contentString);
     deletewindow.close();
     messagewindow.close();
+    inputwindow.close();
+    if (tempMarker != null) tempMarker.setMap(null);
     infowindow.open(map, marker);
   });
   markers.push(marker);
@@ -89,18 +127,17 @@ function addMarker(name, notes, location) {
   google.maps.event.addListener(marker, 'rightclick', function() {
     infowindow.close();
     messagewindow.close();
+    inputwindow.close();
+    if (tempMarker != null) tempMarker.setMap(null);
     deletewindow.setContent(deleteButton);
     deletewindow.open(map, marker);
   });
-
 }
 
 function deleteMarker(markerId) {
-
-  for (var i = 0; i < markers.length; i++) {
+  for (var i = 1; i <= markers.length; i++) {
 
     if (markers[i].id === markerId) {
-
       markers[i].setMap(null);
     }
   }
@@ -147,4 +184,13 @@ function saveData() {
   document.getElementById('notes').value = '';
   inputwindow.close();
   messagewindow.open(map, marker);
+  //if (tempMarker != null) tempMarker.setMap(null);
+  //tempMarker = null;
+}
+
+function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+  infoWindow.setPosition(pos);
+  infoWindow.setContent(browserHasGeolocation ?
+                        'Error: The Geolocation service failed.' :
+                        'Error: Your browser doesn\'t support geolocation.');
 }
