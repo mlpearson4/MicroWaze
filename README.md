@@ -1,4 +1,4 @@
-# crimsonhacks17
+# MicroWaves - CrimsonHacks 2017
 
 This web application is designed to locate and report the location of microwaves on The Univeristy of Alabama campus. The project was created for CrimsonHacks 2017.
 
