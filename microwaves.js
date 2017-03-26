@@ -24,7 +24,7 @@ function initMap() {
   counter = 0;
   tempMarker = null;
   
-  var circle = new google.maps.Circle({
+  /*var circle = new google.maps.Circle({
       strokeColor: '#00BFFF',
       strokeOpacity: 0.8,
       strokeWeight: 2,
@@ -47,21 +47,27 @@ function initMap() {
       circle.setVisible(true);
       map.setCenter(pos);
     }, function() {
-      handleLocationError(true, infoWindow, map.getCenter());
+      handleLocationError();
     });
   } else {
     // Browser doesn't support Geolocation
-    handleLocationError(false, infoWindow, map.getCenter());
-  }
+    handleLocationError();
+  }*/
 
   initializeMarkers();
+  
+  var form = '<div id="form">'+'<table><tr><td>Building:</td><td>'
+  +'<input type='+"'text' id='name' /> </td></tr><tr><td>Notes:</td><td>"
+  +"<input type='text' id='notes' /> </td></tr><tr><td></td><td>"
+  +"<input type='button' value='Save' onclick='saveData()' />"
+  +"</td></tr></table>";
 
   inputwindow = new google.maps.InfoWindow({
-    content: document.getElementById('form')
+    content: form
   })
 
   messagewindow = new google.maps.InfoWindow({
-    content: document.getElementById('message')
+    content: 'Location saved'
   });
 
   google.maps.event.addListener(map, 'click', function(event) {
@@ -87,15 +93,8 @@ function initMap() {
 }
 
 function addMarker(name, notes, location) {
-
-  
-
   counter++;
 
-  //if (tempMarker != null) tempMarker.setMap(null);
-  //tempMarker = null;
-
-//var
   var marker = new google.maps.Marker({
     position: location,
     map: map,
@@ -184,13 +183,7 @@ function saveData() {
   document.getElementById('notes').value = '';
   inputwindow.close();
   messagewindow.open(map, marker);
-  //if (tempMarker != null) tempMarker.setMap(null);
-  //tempMarker = null;
 }
 
-function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-  infoWindow.setPosition(pos);
-  infoWindow.setContent(browserHasGeolocation ?
-                        'Error: The Geolocation service failed.' :
-                        'Error: Your browser doesn\'t support geolocation.');
+function handleLocationError() {
 }
